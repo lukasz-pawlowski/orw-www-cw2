@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+	<title>ORW cw 2</title>
+	<meta charset="utf-8">
+</head>
+<body>
+
+<script>
+
+//stworzenie xmlhttprequest
+function createXml(){
+  var xmlHttp;
+  try{
+    // Utworzenie obiektu XMLHttpRequest (silnik Gecko, WebKit, Presto, Trident w IE>6)
+    xmlHttp=new XMLHttpRequest();
+  } catch(e) {
+    // Wylapuje blad jesli JavaScript nie posiada obiektu XMLHttpRequest
+    try {
+      // Utworzenie obiektu ActiveXObject, który jest zawarty w kontrolce ActiveX IE
+      xmlHttp=new ActiveXObject("Msxml2.XMLHTTP");
+    } catch(e) {
+      try {
+        // Utworzenie obiektu ActiveXObject, dla innych wersji IE
+        xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+      } catch(e) {
+        // Wyswietlenie bledu o braku obslugi obiektu XMLHttpRequest
+        alert("Your browser does not support AJAX!");
+        return false;
+      }
+    }
+  }
+  // zwrócenie obiektu
+  return xmlHttp;
+}
+
+var xmlObject = createXml();
+
+//pobranie menu
+xmlObject.onreadystatechange = function() {
+	if (xmlObject.readyState == 4 && xmlObject.status == 200) {
+		document.getElementById("menu").innerHTML = xmlObject.responseText;
+	}
+};
+xmlObject.open("GET", "menu.html.part", true);
+xmlObject.send();
+
+//pobranie kolejnych artykulow
+function getArticle(article){
+	xmlObject.onreadystatechange = function() {
+		if (xmlObject.readyState == 4 && xmlObject.status == 200) {
+			document.getElementById("article").innerHTML = xmlObject.responseText;
+		}
+	};
+	xmlObject.open("GET", article+".html.part", true);
+	xmlObject.send();
+}
+
+
+//web workers
+var w;
+var v;
+
+function startWorker() {
+    if(typeof(Worker) !== "undefined") {
+        if(typeof(w) == "undefined") {
+            w = new Worker("mytask.js");
+			v = new Worker("randomColor.js");
+        }
+        w.onmessage = function(event) {
+		
+            document.getElementById("result").innerHTML = event.data;
+        };
+		v.onmessage = function(event){
+			document.getElementById("result").style.backgroundColor = event.data;
+		}
+    } else {
+        document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
+    }
+}
+
+function stopWorker() { 
+    w.terminate();
+    w = undefined;
+}
+function stopColors(){
+	v.terminate();
+	v = undefined;
+}
+
+
+//wyslij imie przy zmianie tekstu
+function wyslijImie(){
+	var name = document.getElementById('name').value;
+	w.postMessage(name);
+	console.log('wyslano');
+}
+</script>
+<style>
+	.block{border:1px solid #ccc;width:auto;padding:20px;margin:20px;}
+	a{border:1px solid #ccc;background:#22CC22;padding:5px 15px;margin:10px;color:white;text-decoration:none;}
+	#result{padding:10px;border:1px solid #ccc;}
+</style>
+	<div class="block" id="menu"></div>
+	<div class="block" id="article"></div>
+	
+</body>
+</html>

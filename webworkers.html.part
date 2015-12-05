@@ -1,0 +1,5 @@
+<button onclick="startWorker()">Wystartuj workera z liczbami i kolorami</button><br><br>
+<button onclick="stopWorker()">Zatrzymaj workera z liczbami</button><br><br>
+<button onclick="stopColors()">Zatrzymaj workera z kolorami</button><br><br>
+<input type="text" id="name" placeholder="Wpisz imie" oninput="wyslijImie()"><br><br>
+<div id="result"></div>

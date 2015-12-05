@@ -1,0 +1,5 @@
+<p>Ajax loaded menu</p>
+	<p><a onclick="getArticle('article1');" href="#">Artykul 1</a></p>
+	<p><a onclick="getArticle('article2');" href="#" >Artykul 2</a></p>
+	<p><a onclick="getArticle('article3');"  href="#">Artykul 3</a></p>
+	<p><a onclick="getArticle('webworkers');"  href="#">Web Workers</a></p>
