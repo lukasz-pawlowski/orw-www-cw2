@@ -68,9 +68,11 @@ function startWorker() {
 			v = new Worker("randomColor.js");
         }
         w.onmessage = function(event) {
-		
             document.getElementById("result").innerHTML = event.data;
         };
+		w.onerror = function(object) {
+			alert(object.message);
+		}
 		v.onmessage = function(event){
 			document.getElementById("result").style.backgroundColor = event.data;
 		}

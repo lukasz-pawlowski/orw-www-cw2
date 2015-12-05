@@ -10,8 +10,11 @@ onmessage = function(e) {
 function timedCount() {
 	
     i=i+1;
+	if(i == 4)
+		postError("i = 4: Obsluga bledu");
     postMessage("Witaj "+name+"! Tu jest twoj numer: "+i);
     setTimeout("timedCount()", 2000);
+	
 }
 
 timedCount();
